@@ -1,4 +1,4 @@
-local repo = "https://raw.githubusercontent.com/YOUR_NAME/Argon/main/";
+local repo = "https://github.com/IodineProject/Argon-UI/edit/main/Argon/main/";
 local function fetch(p)
     if isfile and isfile("Argon/" .. p) then return readfile("Argon/" .. p); end;
     return game:HttpGet(repo .. p);
