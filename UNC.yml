@@ -52,10 +52,6 @@ globals:
       - required: false
         type: string
     must_use: true
-  LPH_NO_VIRTUALIZE:
-    args:
-      - type: function
-    must_use: true
   base64_decode:
     args:
       - type: string

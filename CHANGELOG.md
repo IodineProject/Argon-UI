@@ -24,6 +24,8 @@
   Sub-tab labels brighten on hover.
 - Notifications: the left stripe that drained to a dot became a bottom underline in the
   notification's colour, with transparent ends, that drains toward its centre.
+- Removed the Luarmor-specific `LPH_NO_VIRTUALIZE` wrappers and stub from the library and
+  the lint/autocomplete setup. The README was rewritten with screenshots.
 - ThemeManager: the font dropdown lists all 41 font families Roblox ships (was 6) and is
   searchable. Saved themes that use the old names still load.
 - Keybind list redesign: keycap pills, names that light up when active, modes on the

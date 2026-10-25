@@ -1,7 +1,3 @@
-loadstring([[
-    function LPH_NO_VIRTUALIZE(f) return f end;
-]])();
-
 local cr = cloneref or function(o) return o; end;
 local function sv(n) return cr(game:GetService(n)); end;
 local Plrs, UIS, RS, TS, HS, Teams, GS = sv("Players"), sv("UserInputService"), sv("RunService"), sv("TweenService"), sv("HttpService"), sv("Teams"), sv("GuiService");
@@ -282,13 +278,13 @@ TipL.TextWrapped = true;
 local tipTok = 0;
 local tipMove;
 
-local tipPos = LPH_NO_VIRTUALIZE(function(p)
+local tipPos = function(p)
     local ss, ts = SG.AbsoluteSize, Tip.AbsoluteSize;
     local x, y = p.X + 14, p.Y + 10;
     if x + ts.X > ss.X - 4 then x = p.X - 10 - ts.X; end;
     if y + ts.Y > ss.Y - 4 then y = p.Y - 6 - ts.Y; end;
     Tip.Position = UO(math.max(x, 4), math.max(y, 4));
-end);
+end;
 local function tipShow(t)
     TipL.Text = t;
     tipPos(UIS:GetMouseLocation());
@@ -313,9 +309,9 @@ function Library:AddTooltip(info, dis, obj, el)
             if my ~= tipTok then return; end;
             tipShow(t);
             if tipMove then tipMove:Disconnect(); end;
-            tipMove = UIS.InputChanged:Connect(LPH_NO_VIRTUALIZE(function(i)
+            tipMove = UIS.InputChanged:Connect(function(i)
                 if i.UserInputType == EIT.MouseMovement then tipPos(UIS:GetMouseLocation()); end;
-            end));
+            end);
         end);
     end);
     con(obj.MouseLeave, tipHide);
@@ -414,9 +410,9 @@ Library.KeybindContainer = KBL;
 Library.KeybindMenu = { SetVisibilityControl = function() end };
 
 local DF;
-con(UIS.InputChanged, LPH_NO_VIRTUALIZE(function(i)
+con(UIS.InputChanged, function(i)
     if DF and (i.UserInputType == EIT.MouseMovement or i.UserInputType == EIT.Touch) then DF(i); end;
-end));
+end);
 local function dgo(i, f, done)
     DF = f;
     local c; c = i.Changed:Connect(function()
@@ -425,10 +421,10 @@ local function dgo(i, f, done)
 end;
 local function draggable(handle, target, done)
     local st0, pos0;
-    local mv = LPH_NO_VIRTUALIZE(function(i)
+    local mv = function(i)
         local d = i.Position - st0;
         target.Position = U2(pos0.X.Scale, pos0.X.Offset + d.X, pos0.Y.Scale, pos0.Y.Offset + d.Y);
-    end);
+    end;
     con(handle.InputBegan, function(i)
         if i.UserInputType == EIT.MouseButton1 or i.UserInputType == EIT.Touch then
             st0, pos0 = i.Position, target.Position;
@@ -784,7 +780,7 @@ function GB:AddSlider(idx, info)
         local p = math.clamp((x - track.AbsolutePosition.X) / math.max(track.AbsoluteSize.X, 1), 0, 1);
         Sl:SetValue(Sl.Min + (Sl.Max - Sl.Min) * p, false);
     end;
-    local smv = LPH_NO_VIRTUALIZE(function(i) upd(i.Position.X); end);
+    local smv = function(i) upd(i.Position.X); end;
     con(hit.InputBegan, function(i)
         if Sl.Disabled then if i.UserInputType == EIT.MouseButton1 or i.UserInputType == EIT.Touch then deny(track); Library:_tipNow(info.DisabledTooltip); end; return; end;
         if i.UserInputType == EIT.MouseButton1 or i.UserInputType == EIT.Touch then
@@ -1164,7 +1160,7 @@ mkColorPicker = function(holder, idx, info, parent)
         pf, psh = nil, nil;
     end;
     local function dragger(area, fn)
-        local mv = LPH_NO_VIRTUALIZE(function(i) if pf then fn(mpos(i)); end; end);
+        local mv = function(i) if pf then fn(mpos(i)); end; end;
         con(area.InputBegan, function(i)
             if i.UserInputType == EIT.MouseButton1 or i.UserInputType == EIT.Touch then
                 fn(mpos(i));
@@ -1694,14 +1690,14 @@ function Library:CreateWindow(info)
     ic(grip, "grip-vertical", 12, "MutedColor", { Position = US(.5, .5), AnchorPoint = V2(.5, .5), Rotation = 45, ImageTransparency = .5 });
     grip.Visible = info.Resizable ~= false;
     local rz0, rs0;
-    local rzm = LPH_NO_VIRTUALIZE(function(i)
+    local rzm = function(i)
         local d = (i.Position - rz0) / Library.DPIScale;
         local ap = hold.AnchorPoint;
         local nw, nh = math.max(rs0.X + d.X, 640), math.max(rs0.Y + d.Y, 420);
         local ow, oh = hold.Size.X.Offset, hold.Size.Y.Offset;
         hold.Size = UO(nw, nh);
         hold.Position += UO((nw - ow) * ap.X * Library.DPIScale, (nh - oh) * ap.Y * Library.DPIScale);
-    end);
+    end;
     con(grip.InputBegan, function(i)
         if i.UserInputType == EIT.MouseButton1 or i.UserInputType == EIT.Touch then
             rz0, rs0 = i.Position, hold.AbsoluteSize / Library.DPIScale;
@@ -1922,11 +1918,11 @@ function Library:CreateWindow(info)
         reg(mb, { BackgroundColor3 = "MainColor" }); rc(mb, 24); st(mb, "AccentColor", .35); gloss(mb); scl(mb);
         ic(mb, info.Icon or "atom", 22, "AccentColor", { Position = US(.5, .5), AnchorPoint = V2(.5, .5), ZIndex = 141 });
         local s0, p0, mv;
-        local mbm = LPH_NO_VIRTUALIZE(function(i)
+        local mbm = function(i)
             local d = i.Position - s0;
             if d.Magnitude > 6 then mv = true; end;
             if mv then mb.Position = U2(p0.X.Scale, p0.X.Offset + d.X, p0.Y.Scale, p0.Y.Offset + d.Y); end;
-        end);
+        end;
         con(mb.InputBegan, function(i)
             if i.UserInputType == EIT.MouseButton1 or i.UserInputType == EIT.Touch then
                 s0, p0, mv = i.Position, mb.Position, false;
