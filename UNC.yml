@@ -1,0 +1,77 @@
+base: roblox
+globals:
+  cloneref:
+    args:
+      - type: any
+    must_use: true
+  getcustomasset:
+    args:
+      - type: string
+      - required: false
+        type: bool
+    must_use: true
+  getgenv:
+    args: []
+    must_use: true
+  gethui:
+    args: []
+    must_use: true
+  protectgui:
+    args:
+      - type:
+          display: Instance
+  isfile:
+    args:
+      - type: string
+    must_use: true
+  isfolder:
+    args:
+      - type: string
+    must_use: true
+  makefolder:
+    args:
+      - type: string
+  writefile:
+    args:
+      - type: string
+      - type: string
+  readfile:
+    args:
+      - type: string
+    must_use: true
+  listfiles:
+    args:
+      - type: string
+    must_use: true
+  delfile:
+    args:
+      - type: string
+  loadstring:
+    args:
+      - type: string
+      - required: false
+        type: string
+    must_use: true
+  LPH_NO_VIRTUALIZE:
+    args:
+      - type: function
+    must_use: true
+  base64_decode:
+    args:
+      - type: string
+    must_use: true
+  base64decode:
+    args:
+      - type: string
+    must_use: true
+  crypt.base64.decode:
+    args:
+      - type: string
+    must_use: true
+  game.HttpGet:
+    method: true
+    args:
+      - type: string
+      - required: false
+        type: bool
+    must_use: true
